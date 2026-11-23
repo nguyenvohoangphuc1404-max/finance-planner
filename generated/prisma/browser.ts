@@ -23,6 +23,21 @@ export * from './enums';
  */
 export type User = Prisma.UserModel
 /**
+ * Model Session
+ * 
+ */
+export type Session = Prisma.SessionModel
+/**
+ * Model Account
+ * 
+ */
+export type Account = Prisma.AccountModel
+/**
+ * Model Verification
+ * 
+ */
+export type Verification = Prisma.VerificationModel
+/**
  * Model Transaction
  * 
  */
@@ -32,3 +47,8 @@ export type Transaction = Prisma.TransactionModel
  * 
  */
 export type WishlistItem = Prisma.WishlistItemModel
+/**
+ * Model CategoryBudget
+ * 
+ */
+export type CategoryBudget = Prisma.CategoryBudgetModel

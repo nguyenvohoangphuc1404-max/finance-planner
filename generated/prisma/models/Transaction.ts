@@ -485,10 +485,6 @@ export type EnumCategoryFieldUpdateOperationsInput = {
   set?: $Enums.Category
 }
 
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string
-}
-
 export type TransactionCreateWithoutUserInput = {
   id?: string
   type: $Enums.TransactionType

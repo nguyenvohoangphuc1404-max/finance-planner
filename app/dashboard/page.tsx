@@ -1,7 +1,7 @@
 import { formatVND } from "@/lib/finance";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/session";
-import Link from "next/link";
+import { ExpensePieChart } from "@/components/expense-pie-chart";
 
 export const dynamic = "force-dynamic";
 
@@ -26,20 +26,16 @@ export default async function DashboardPage() {
   ]);
 
   const soDu = (thu._sum.amount ?? 0) - (chi._sum.amount ?? 0);
+  const chartData = theo.map((d) => ({
+    name: d.category,
+    value: d._sum.amount ?? 0,
+  }));
 
   return (
-    <main className="p-8 max-w-4xl mx-auto space-y-6">
-      <div className="flex items-center justify-between border-b pb-4">
-        <div>
-          <h1 className="text-2xl font-bold">Dashboard</h1>
-          <p className="text-sm text-slate-500">Xin chào, {user.name} ({user.email})</p>
-        </div>
-        <Link
-          href="/transactions"
-          className="bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-medium"
-        >
-          Quản lý giao dịch →
-        </Link>
+    <main className="p-6 max-w-5xl mx-auto space-y-6">
+      <div className="border-b pb-4">
+        <h1 className="text-2xl font-bold">Dashboard</h1>
+        <p className="text-sm text-slate-500">Xin chào, {user.name} ({user.email})</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -57,16 +53,31 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      <div className="p-4 border rounded-xl bg-white">
-        <h2 className="font-semibold mb-2">Chi tiêu theo danh mục</h2>
-        <ul className="space-y-1 text-sm">
-          {theo.map((d) => (
-            <li key={d.category} className="flex justify-between">
-              <span>{d.category}</span>
-              <span className="font-medium">{formatVND(d._sum.amount ?? 0)}</span>
-            </li>
-          ))}
-        </ul>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="p-5 border rounded-xl bg-white">
+          <h2 className="font-semibold mb-2">Biểu đồ tỉ lệ chi tiêu</h2>
+          <ExpensePieChart data={chartData} />
+        </div>
+
+        <div className="p-5 border rounded-xl bg-white">
+          <h2 className="font-semibold mb-3">Bảng chi tiêu theo danh mục</h2>
+          <table className="w-full text-sm text-left">
+            <thead>
+              <tr className="border-b text-slate-500">
+                <th className="py-2">Danh mục</th>
+                <th className="py-2 text-right">Tổng tiền</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y">
+              {theo.map((d) => (
+                <tr key={d.category}>
+                  <td className="py-2 font-medium">{d.category}</td>
+                  <td className="py-2 text-right">{formatVND(d._sum.amount ?? 0)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </main>
   );
