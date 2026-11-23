@@ -1,10 +1,18 @@
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "../generated/prisma"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "postgresql" // không có url ở đây (v7)
+}
+
+model User {
+  id           String         @id @default(cuid())
+  email        String         @unique
+  name         String
+  transactions Transaction[]
+  wishlist     WishlistItem[]
 }
 
 enum TransactionType {
@@ -12,21 +20,37 @@ enum TransactionType {
   EXPENSE
 }
 
-model Category {
-  id           String          @id @default(cuid())
-  name         String
-  type         TransactionType
-  budgetLimit  Float?
-  transactions Transaction[]
+enum Category {
+  FOOD
+  TRANSPORT
+  SALARY
+  OTHER
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
 }
 
 model Transaction {
-  id         String          @id @default(cuid())
-  amount     Float
-  type       TransactionType
-  note       String?
-  date       DateTime        @default(now())
-  categoryId String
-  category   Category        @relation(fields: [categoryId], references: [id])
-  createdAt  DateTime        @default(now())
+  id String @id @default(cuid())
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type TransactionType
+  amount Int // VND, số nguyên
+  description String
+  category Category
+  date DateTime
+  createdAt DateTime @default(now())
+  @@index([userId, date])
+}
+
+model WishlistItem {
+  id String @id @default(cuid())
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name String
+  cost Int
+  priority Priority @default(MEDIUM)
 }
