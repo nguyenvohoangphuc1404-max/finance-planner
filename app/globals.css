@@ -90,15 +90,3 @@ body {
   }
 }
 
-.snowflake {
-  position: fixed;
-  top: -5vh;
-  color: #ffffff;
-  text-shadow: 0 0 8px rgba(255, 255, 255, 0.85);
-  user-select: none;
-  pointer-events: none;
-  z-index: 40;
-  animation-name: snowFall;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-}
