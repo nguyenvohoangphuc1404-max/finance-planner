@@ -29,9 +29,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
         </nav>
         {children}
-        <Toaster richColors position="top-right" />
-      </body>
+      <Toaster richColors position="top-right" />
       <ChristmasTheme />
-    </html>
+    </body>
+  </html>
   );
 }
