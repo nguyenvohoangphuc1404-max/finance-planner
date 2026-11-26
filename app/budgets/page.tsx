@@ -3,15 +3,21 @@ import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { upsertBudget } from "./actions";
 
+export const dynamic = "force-dynamic";
+
 const CATEGORIES = [
-  "Ăn uống",
-  "Di chuyển",
-  "Học tập",
-  "Giải trí",
-  "Mua sắm",
-  "Hóa đơn",
-  "Khác",
+  { value: "FOOD", label: "Ăn uống (FOOD)" },
+  { value: "TRANSPORT", label: "Di chuyển (TRANSPORT)" },
+  { value: "STUDY", label: "Học tập (STUDY)" },
+  { value: "ENTERTAINMENT", label: "Giải trí (ENTERTAINMENT)" },
+  { value: "SHOPPING", label: "Mua sắm (SHOPPING)" },
+  { value: "BILLS", label: "Hóa đơn (BILLS)" },
+  { value: "OTHER", label: "Khác (OTHER)" },
 ];
+
+const CATEGORY_LABELS: Record<string, string> = Object.fromEntries(
+  CATEGORIES.map((c) => [c.value, c.label])
+);
 
 export default async function BudgetsPage() {
   const user = await requireUser();
@@ -54,51 +60,55 @@ export default async function BudgetsPage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6">
+    <div className="max-w-4xl mx-auto p-6 space-y-6 text-slate-100">
       <div>
-        <h1 className="text-2xl font-bold">
+        <h1 className="text-2xl font-bold text-white">
           Ngân sách tháng {now.getMonth() + 1}/{now.getFullYear()}
         </h1>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-slate-400">
           Thiết lập hạn mức chi tiêu theo từng danh mục để kiểm soát dòng tiền
         </p>
       </div>
 
       <form
         action={upsertBudget}
-        className="p-4 border rounded-xl bg-white shadow-sm grid grid-cols-1 md:grid-cols-3 gap-4 items-end"
+        className="p-4 border border-slate-800 rounded-xl bg-white text-slate-900 shadow-sm grid grid-cols-1 md:grid-cols-3 gap-4 items-end"
       >
         <div>
-          <label className="block text-sm font-medium mb-1">Danh mục</label>
+          <label className="block text-sm font-medium text-slate-800 mb-1">
+            Danh mục
+          </label>
           <select
             name="category"
-            className="w-full border rounded-lg px-3 py-2 text-sm"
+            className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm bg-white text-slate-900"
             required
           >
             {CATEGORIES.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
+              <option key={cat.value} value={cat.value}>
+                {cat.label}
               </option>
             ))}
           </select>
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1">Hạn mức (VNĐ)</label>
+          <label className="block text-sm font-medium text-slate-800 mb-1">
+            Hạn mức (VNĐ)
+          </label>
           <input
             type="number"
             name="limit"
             min={1000}
             step={1000}
             placeholder="Ví dụ: 1500000"
-            className="w-full border rounded-lg px-3 py-2 text-sm"
+            className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm bg-white text-slate-900"
             required
           />
         </div>
 
         <button
           type="submit"
-          className="bg-black text-white rounded-lg px-4 py-2 text-sm font-medium hover:bg-gray-800"
+          className="bg-blue-600 text-white rounded-lg px-4 py-2 text-sm font-semibold hover:bg-blue-500 transition cursor-pointer"
         >
           Lưu hạn mức
         </button>
@@ -106,7 +116,7 @@ export default async function BudgetsPage() {
 
       <div className="space-y-4">
         {budgets.length === 0 ? (
-          <p className="text-sm text-gray-500 text-center py-8 border rounded-xl">
+          <p className="text-sm text-slate-400 text-center py-8 border border-slate-800 rounded-xl">
             Chưa có ngân sách nào. Hãy thiết lập hạn mức ở biểu mẫu phía trên.
           </p>
         ) : (
@@ -131,17 +141,19 @@ export default async function BudgetsPage() {
             return (
               <div
                 key={b.id}
-                className="p-4 border rounded-xl bg-white shadow-sm space-y-2"
+                className="p-4 border border-slate-200 rounded-xl bg-white text-slate-900 shadow-sm space-y-2"
               >
                 <div className="flex justify-between items-center">
                   <div>
-                    <span className="font-semibold">{b.category}</span>
-                    <span className="ml-2 text-xs px-2 py-0.5 rounded-full bg-gray-100">
+                    <span className="font-semibold text-slate-900">
+                      {CATEGORY_LABELS[b.category] || b.category}
+                    </span>
+                    <span className="ml-2 text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">
                       {statusText} ({rawPercent}%)
                     </span>
                   </div>
                   <div className="flex items-center gap-4">
-                    <span className="text-sm">
+                    <span className="text-sm text-slate-800">
                       <strong>{spent.toLocaleString("vi-VN")} đ</strong> /{" "}
                       {limitVal.toLocaleString("vi-VN")} đ
                     </span>
@@ -149,7 +161,7 @@ export default async function BudgetsPage() {
                       <input type="hidden" name="id" value={b.id} />
                       <button
                         type="submit"
-                        className="text-xs text-red-600 hover:underline"
+                        className="text-xs text-red-600 hover:underline border-0 p-0 cursor-pointer"
                       >
                         Xóa
                       </button>
@@ -157,7 +169,7 @@ export default async function BudgetsPage() {
                   </div>
                 </div>
 
-                <div className="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                <div className="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
                   <div
                     className={`h-full ${barColor} transition-all`}
                     style={{ width: `${percent}%` }}

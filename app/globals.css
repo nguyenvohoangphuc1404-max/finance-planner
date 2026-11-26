@@ -39,3 +39,29 @@ textarea::placeholder {
   color: #94a3b8 !important;
   -webkit-text-fill-color: #94a3b8 !important;
 }
+/* Sửa lỗi chữ trắng trên nền card trắng (Transactions, Budgets, Wishlist, Login) */
+.bg-white {
+  color: #0f172a !important;
+}
+
+.bg-white h1,
+.bg-white h2,
+.bg-white h3,
+.bg-white label,
+.bg-white p,
+.bg-white span {
+  color: #1e293b;
+}
+
+/* Làm nổi bật các nút submit bên trong card trắng (như nút Thêm giao dịch) */
+.bg-white button[type="submit"]:not(.bg-black):not(.bg-slate-900):not(.bg-blue-600) {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+  border-color: #2563eb !important;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.bg-white button[type="submit"]:not(.bg-black):not(.bg-slate-900):not(.bg-blue-600):hover {
+  background-color: #1d4ed8 !important;
+}
