@@ -13,8 +13,8 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="vi">
-      <body className="bg-slate-50 text-slate-900 min-h-screen">
-        <nav className="bg-white border-b border-slate-200 px-6 py-3">
+      <body className="text-slate-900 min-h-screen">
+        <nav className="bg-white/90 backdrop-blur border-b border-slate-200 px-6 py-3">
           <div className="max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-4">
             <Link href="/dashboard" className="font-bold text-lg text-slate-900">
               Finance Planner
@@ -29,9 +29,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
         </nav>
         {children}
-      <Toaster richColors position="top-right" />
-      <ChristmasTheme />
-    </body>
-  </html>
+        <Toaster richColors position="top-right" />
+        <ChristmasTheme />
+      </body>
+    </html>
   );
 }
