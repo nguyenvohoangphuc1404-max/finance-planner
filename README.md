@@ -42,4 +42,3 @@
 
 - **Quyết định kỹ thuật:** Lưu tiền VND bằng số nguyên (`Int`) để tránh sai số thập phân; lưu trạng thái lọc trên URL `searchParams` để hỗ trợ SSR và chia sẻ link; tách logic thuần túy vào `lib/` để unit test độc lập.
 - **Giới hạn đã biết:** Giao dịch định kỳ chưa có cronjob chạy nền tự động mà cập nhật khi người dùng thao tác trên hệ thống.
-```[cite: 16, 18, 20, 21, 26]
