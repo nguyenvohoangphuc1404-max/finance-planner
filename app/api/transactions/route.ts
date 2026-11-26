@@ -1,22 +1,17 @@
-import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { getDateRange } from "@/lib/finance";
-import { transactionFilterSchema } from "@/lib/validation";
+import { getSessionUser } from "@/lib/session";
 
-export async function GET(request: NextRequest) {
-  const parsed = transactionFilterSchema.safeParse(
-    Object.fromEntries(request.nextUrl.searchParams),
-  );
-  if (!parsed.success) {
-    return Response.json(
-      { error: "Tham số lọc không hợp lệ" },
-      { status: 400 },
-    );
+export async function GET() {
+  const user = await getSessionUser();
+  if (!user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  const { range, ...rest } = parsed.data;
-  const rows = await prisma.transaction.findMany({
-    where: { date: getDateRange(range), ...rest },
+
+  const transactions = await prisma.transaction.findMany({
+    where: { userId: user.id },
     orderBy: { date: "desc" },
   });
-  return Response.json(rows);
+
+  return NextResponse.json({ transactions });
 }

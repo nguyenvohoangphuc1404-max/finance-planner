@@ -47,3 +47,10 @@ export function crossedMilestones(
   return MILESTONES.filter(
     (m) => prev < m && next >= m);
 }
+export function budgetStatus(spent: number, limit: number) {
+  if (limit <= 0) return { percent: 0, level: "OK" as const };
+  const percent = Math.round((spent / limit) * 100);
+  if (percent >= 100) return { percent, level: "EXCEEDED" as const };
+  if (percent >= 80) return { percent, level: "WARNING" as const };
+  return { percent, level: "OK" as const };
+}

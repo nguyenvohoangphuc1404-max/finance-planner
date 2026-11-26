@@ -48,3 +48,15 @@ export const transactionFilterSchema = z.object({
 
 export type Filters =
   z.infer<typeof transactionFilterSchema>;
+import { Priority } from "@/generated/prisma/enums";
+
+export const wishlistSchema = z.object({
+  name: z.string().trim().min(1, { error: "Nhập tên mục tiêu" }).max(100),
+  cost: z.coerce.number().int({ error: "Phải là số nguyên" }).positive({ error: "Giá phải > 0" }),
+  priority: z.enum(Priority).default(Priority.MEDIUM),
+});
+
+export const budgetSchema = z.object({
+  category: z.enum(Category),
+  limit: z.coerce.number().int().positive({ error: "Hạn mức phải > 0" }),
+});

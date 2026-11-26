@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Toaster } from "sonner";
 import Link from "next/link";
+// @ts-ignore
 import "./globals.css";
 
 export const metadata: Metadata = {
