@@ -1,13 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   ArrowLeftRight,
   Target,
   PiggyBank,
-  UserCircle,
+  LogOut,
   Wallet,
 } from "lucide-react";
 
@@ -16,11 +16,29 @@ const NAV_ITEMS = [
   { href: "/transactions", label: "Giao dịch", icon: ArrowLeftRight },
   { href: "/budgets", label: "Ngân sách", icon: PiggyBank },
   { href: "/wishlist", label: "Wishlist", icon: Target },
-  { href: "/login", label: "Tài khoản", icon: UserCircle },
 ];
 
 export function AppSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+
+  // Ẩn hoàn toàn Sidebar khi đang ở trang đăng nhập / đăng ký
+  if (pathname === "/login" || pathname === "/register") {
+    return null;
+  }
+
+  async function handleLogout() {
+    try {
+      await fetch("/api/auth/sign-out", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({}),
+      });
+    } finally {
+      router.push("/login");
+      router.refresh();
+    }
+  }
 
   return (
     <>
@@ -64,8 +82,16 @@ export function AppSidebar() {
           })}
         </nav>
 
-        <div className="p-4 border-t border-slate-800/80 text-xs text-slate-500">
-          PHY10615 • v1.0
+        <div className="p-3 border-t border-slate-800/80 space-y-2">
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-rose-400 hover:bg-rose-500/10 hover:text-rose-300 border-0 transition-all cursor-pointer"
+          >
+            <LogOut className="w-4 h-4 shrink-0" />
+            <span>Đăng xuất</span>
+          </button>
+          <div className="px-3 text-xs text-slate-500">PHY10615 • v1.0</div>
         </div>
       </aside>
 
@@ -75,6 +101,13 @@ export function AppSidebar() {
             <Wallet className="w-4 h-4 text-blue-400" />
             Finance Planner
           </span>
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="text-xs text-rose-400 hover:text-rose-300 border-0 p-1"
+          >
+            Đăng xuất
+          </button>
         </div>
         <nav className="flex items-center gap-2 overflow-x-auto text-xs pb-1">
           {NAV_ITEMS.map((item) => {

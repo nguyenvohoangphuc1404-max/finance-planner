@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Toaster } from "sonner";
 import { AppSidebar } from "@/components/app-sidebar";
+import { MainShell } from "@/components/main-shell";
 // @ts-ignore
 import "./globals.css";
 
@@ -16,11 +17,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="vi">
-      <body className="bg-slate-50 text-slate-900 min-h-screen antialiased">
+      <body className="bg-[#0b1120] text-slate-100 min-h-screen antialiased">
         <AppSidebar />
-        <div className="md:pl-64 min-h-screen flex flex-col">
-          <div className="flex-1">{children}</div>
-        </div>
+        <MainShell>{children}</MainShell>
         <Toaster richColors position="top-right" />
       </body>
     </html>
