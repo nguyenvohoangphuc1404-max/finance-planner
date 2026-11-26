@@ -1,3 +1,4 @@
+import { ChristmasTheme } from "@/components/christmas-theme";
 import type { Metadata } from "next";
 import { Toaster } from "sonner";
 import Link from "next/link";
@@ -30,6 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {children}
         <Toaster richColors position="top-right" />
       </body>
+      <ChristmasTheme />
     </html>
   );
 }

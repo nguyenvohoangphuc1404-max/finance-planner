@@ -28,3 +28,32 @@ body {
 @layer base {
   input, select, button { @apply rounded border p-2; }
 }
+/* Giao diện nền Noel nhẹ nhàng */
+body {
+  background: linear-gradient(135deg, #f0f9ff 0%, #fef2f2 50%, #ecfdf5 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+@keyframes snowFall {
+  0% {
+    transform: translateY(-10vh) rotate(0deg);
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(105vh) rotate(360deg);
+    opacity: 0.2;
+  }
+}
+
+.snowflake {
+  position: fixed;
+  top: -5vh;
+  color: #bae6fd;
+  user-select: none;
+  pointer-events: none;
+  z-index: 40;
+  animation-name: snowFall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
