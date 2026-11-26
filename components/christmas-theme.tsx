@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const FLAKES = [
   { left: "4%", size: "15px", duration: "10s", delay: "0s" },
@@ -17,11 +17,27 @@ const FLAKES = [
 ];
 
 export function ChristmasTheme() {
-  const [enabled, setEnabled] = useState(true);
+  const [festive, setFestive] = useState(true);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("fp-theme");
+    if (saved === "light") setFestive(false);
+  }, []);
+
+  useEffect(() => {
+    if (festive) {
+      document.body.style.background =
+        "radial-gradient(circle at top left, #1e3a5f 0%, #0f172a 45%, #14362b 100%)";
+      localStorage.setItem("fp-theme", "festive");
+    } else {
+      document.body.style.background = "#f8fafc";
+      localStorage.setItem("fp-theme", "light");
+    }
+  }, [festive]);
 
   return (
     <>
-      {enabled && (
+      {festive && (
         <div aria-hidden="true">
           {FLAKES.map((f, idx) => (
             <span
@@ -42,11 +58,11 @@ export function ChristmasTheme() {
 
       <button
         type="button"
-        onClick={() => setEnabled((prev) => !prev)}
+        onClick={() => setFestive((prev) => !prev)}
         className="fixed bottom-4 right-4 z-50 rounded-full border border-amber-300/60 bg-rose-700 px-3.5 py-2 text-xs font-semibold text-white shadow-lg hover:bg-rose-600 transition"
-        title="Bật hoặc tắt hiệu ứng tuyết rơi Noel"
+        title="Chuyển đổi giữa nền Noel và nền Sáng chuẩn"
       >
-        {enabled ? "🎄 Tắt tuyết Noel" : "❄️ Bật tuyết Noel"}
+        {festive ? "☀️ Nền sáng" : "🎄 Nền Noel"}
       </button>
     </>
   );
