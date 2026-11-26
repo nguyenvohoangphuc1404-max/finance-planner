@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0b1120;
+  --foreground: #f8fafc;
 }
 
 @theme inline {
@@ -12,81 +12,15 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background-color: #0b1120;
+  color: #f8fafc;
   font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
 }
 
 @layer base {
-  input, select, button { @apply rounded border p-2; }
-}
-/* Giao diện nền Noel nhẹ nhàng */
-body {
-  background: linear-gradient(135deg, #f0f9ff 0%, #fef2f2 50%, #ecfdf5 100%);
-  background-attachment: fixed;
-  min-height: 100vh;
-}
-
-@keyframes snowFall {
-  0% {
-    transform: translateY(-10vh) rotate(0deg);
-    opacity: 0.85;
-  }
-  100% {
-    transform: translateY(105vh) rotate(360deg);
-    opacity: 0.2;
+  input, select, button {
+    @apply rounded border p-2;
   }
 }
-
-/* Giao diện nền Noel Winter Night */
-body {
-  background: radial-gradient(circle at top left, #1e3a5f 0%, #0f172a 45%, #14362b 100%);
-  background-attachment: fixed;
-  min-height: 100vh;
-}
-
-@keyframes snowFall {
-  0% {
-    transform: translateY(-10vh) translateX(0) rotate(0deg);
-    opacity: 0.95;
-  }
-  50% {
-    transform: translateY(50vh) translateX(15px) rotate(180deg);
-    opacity: 0.8;
-  }
-  100% {
-    transform: translateY(105vh) translateX(-10px) rotate(360deg);
-    opacity: 0.25;
-  }
-}
-
-/* Giao diện nền Noel Winter Night */
-body {
-  background: radial-gradient(circle at top left, #1e3a5f 0%, #0f172a 45%, #14362b 100%);
-  background-attachment: fixed;
-  min-height: 100vh;
-}
-
-@keyframes snowFall {
-  0% {
-    transform: translateY(-10vh) translateX(0) rotate(0deg);
-    opacity: 0.95;
-  }
-  50% {
-    transform: translateY(50vh) translateX(15px) rotate(180deg);
-    opacity: 0.8;
-  }
-  100% {
-    transform: translateY(105vh) translateX(-10px) rotate(360deg);
-    opacity: 0.25;
-  }
-}
-
